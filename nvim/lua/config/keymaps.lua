@@ -14,6 +14,12 @@ local opts = { noremap = true, silent = true }
 --
 map("i", "jk", "<Esc>", { desc = "Exit insert mode with jk" })
 map("n", "<leader>qw", ":w<CR>", { desc = "Save current buffer" })
+map(
+  "n",
+  "<leader>cb",
+  [[:%g/^\s*\S/ v/^\s*-\s\[\s\]\s/ normal! ^i- [ ] <CR>]],
+  { desc = "Add checkboxes to all lines without one" }
+)
 
 -- Buffer navigation
 map("n", "]b", function()
@@ -40,10 +46,23 @@ map("n", "gp", function()
   vim.api.nvim_put({ vim.fn.getreg('"') }, "c", true, true)
 end, { desc = "Paste after cursor inline" })
 
--- Find config file (your custom picker)
+-- PICKERS --
 map("n", "<leader>fd", function()
   require("user.config_picker").open()
 end, { desc = "Find config file" })
+
+-- keymaps.lua or wherever you set keymaps
+vim.keymap.set("n", "<leader>fi", function()
+  require("user.file_picker").open()
+end, { desc = "Find file in library" })
+
+vim.keymap.set("n", "<leader>fs", function()
+  require("user.todo_picker").open()
+end, { desc = "Find ToDos" })
+
+-- map("n", "<leader>fi", function()
+--   require("user.file_picker").open()
+-- end, { desc = "Find config file" })
 
 -- Close buffer from tabline (AstroNvim heirline picker)
 map("n", "<leader>bd", function()
