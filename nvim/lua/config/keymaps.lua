@@ -13,7 +13,52 @@ local opts = { noremap = true, silent = true }
 -- =====================
 --
 map("i", "jk", "<Esc>", { desc = "Exit insert mode with jk" })
+map("n", "<leader>rj", ":%!jq .", { desc = "Clean Json" })
+map("n", "<leader>ft", "<cmd>ToggleTerm direction=float<CR>", { desc = "Open floating terminal" })
+map("n", "<leader>rn", "<cmd>%s/^\\s*null,\\s*//<CR>", { desc = "Drop first NULL column" })
+map("n", "<leader>ru", "<cmd>%s/.*/\\L&/<CR>", { desc = "Lowercase entire file" })
+map(
+  "n",
+  "<leader>rr",
+  "<cmd>%s/\\v(^|,)\\zs\\s*\\ze(,|$)/NULL/g<CR>",
+  { desc = "CSV clean: fill empty fields with NULL" }
+)
+map("n", "<leader>r,", "<cmd>%s/,,/,/g<CR>", { desc = "Get rid of double ," })
+map(
+  "n",
+  "<leader>rp",
+  "<cmd>%s/\\s*,\\s*/,/g | %s/\\v^\\s*(?=,)/NULL/g | %s/\\v,(\\s*)(?=,|$)/,NULL/g | %s/\\v(^|,)null(?=,|$)/\\1NULL/gI<CR>",
+  { desc = "Clean CSV: trim spaces, fill empty cells, normalize NULL" }
+)
+map(
+  "n",
+  "<leader>rt",
+  "<cmd>%s/\\s*,\\s*/,/g | %s/^,/NULL,/g | %s/,,/,NULL,/g | %s/,$/,NULL/g | %s/\\v(^|,)null(,|$)/\\1NULL\\2/gI<CR>",
+  { desc = "Clean CSV: trim spaces, fill empty cells, normalize NULL" }
+)
+map("n", "<leader>rs", "<cmd>g/^[,[:space:]]*$/d<CR>", { desc = "Remove empty comma rows" })
+
+map(
+  "n",
+  "<leader>rc",
+  "<cmd>%s/^\\s*,/NULL,/g | %s/,\\s*,/,NULL,/g | %s/,\\s*$/ ,NULL/g<CR>",
+  { desc = "Replace empty CSV cells with NULL" }
+)
+
 map("n", "<leader>qw", ":w<CR>", { desc = "Save current buffer" })
+map(
+  "n",
+  "<leader>j",
+  "i                                                                            ",
+  { desc = "dashedLine" }
+)
+
+-- Next buffer
+map("n", "<Tab>", ":bnext<CR>", { desc = "Next buffer" })
+
+-- Previous buffer
+map("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
+
 map(
   "n",
   "<leader>cb",
